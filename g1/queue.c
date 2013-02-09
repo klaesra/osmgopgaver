@@ -1,22 +1,27 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "queue.h"
 
 int length(QNode* queue) {
     int theLength = 0;
-    QNode* current = (*queue)->link;
+    QNode* current = queue->link;
     if (queue != NULL) { //There is at least 1 element
         ++theLength;
         while (queue != current) { //While there are more different elements
             ++theLength;
-            current = (*current)->link;
+            current = current->link;
         }
     }
-    return theLength
+    return theLength;
 }
 
 void enqueue(QNode** queue, Data el) {
     QNode *QNode;
     QNode = malloc( sizeof(QNode) );
+    if (QNode == NULL){
+        printf("Out of memory");
+        exit(0);
+    }
     QNode->content = el;
     if (*queue == NULL) 
         QNode->link = QNode;
@@ -26,7 +31,7 @@ void enqueue(QNode** queue, Data el) {
 }
 
 Data dequeue(QNode** queue) {
-    QNode current = (*queue)->link;
+    QNode* current = (*queue)->link;
     Data el = current->content;
     if ((*queue)->link == current->link)
         (*queue)->link = NULL;
@@ -36,3 +41,6 @@ Data dequeue(QNode** queue) {
     return el;
 }
 
+int main (){
+    return 0;
+}
