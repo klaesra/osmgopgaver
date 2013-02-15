@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "queue.h"
+#include <string.h>
 
 /* return number of elements in queue */
 int length(QNode* queue) {
@@ -48,18 +49,42 @@ Data dequeue(QNode** queue) {
     return el;
 }
 
+/* sum values of all data in queue */
+int sum(QNode* queue, int (*val)(Data)) {
+  int sumi = 0;
+  if (queue != NULL) {
+    QNode* current = queue;
+    sumi = val(current->content)+sumi;
+    while (queue != current->link) {
+      current = current->link;
+      sumi = val(current->content)+sumi;
+    }
+  }
+  return sumi;
+}
+
+int myStrLen(Data el) {
+  return strlen ((char*) el); 
+}
+
 int main () {
   QNode* testNode = NULL;
+  //testing length and enqueue
   printf("laengde =%d\n", length(testNode));
   enqueue (&testNode, "esjlf");
   printf("laengde =%d\n", length(testNode));
   enqueue (&testNode, "akfhdfkgjh");
   printf("laengde =%d\n", length(testNode));
 
+  //testing sum
+  printf("sum =%d\n", sum(testNode, myStrLen));
+
+  //testing length and dequeue
   printf("vaerdi =%s\n", (char*) dequeue(&testNode));
   printf("laengde =%d\n", length(testNode));
   printf("vaerdi =%s\n", (char*) dequeue(&testNode));
   printf("laengde =%d\n", length(testNode));
+
 
   
   return 0;
