@@ -42,7 +42,7 @@
 #include "drivers/device.h"
 #include "drivers/gcd.h"
 
-/* Returns the number of bytes read before reaching the EOF 
+/* returns the number of bytes read before reaching the EOF 
  * or a negative value on error 
  */
 int syscall_read(int fhandle, void *buffer, int length) {
@@ -51,19 +51,19 @@ int syscall_read(int fhandle, void *buffer, int length) {
     device_t *dev;
     int len;
 
-    dev = device_get(YAMS_TYPECODE_TTY, 0);
-    if (dev == NULL) 
+    dev = device_get(YAMS_TYPECODE_TTY, 0); //from init_startup_fallback
+    if (dev == NULL) //if error return negative value
         return -1;
     
-    gcd = (gcd_t *)dev->generic_device;
-    if (gcd == NULL)
+    gcd = (gcd_t *)dev->generic_device; //from init_startup_fallback
+    if (gcd == NULL)  //if error return negative value
         return -1;
 
-    len = gcd->read(gcd, buffer, length);
-    if (len < 0) 
+    len = gcd->read(gcd, buffer, length); //from init_startup_fallback
+    if (len < 0) //gcd->read function failed
         return -1;
 
-    return len;
+    return len; 
 }
 
 /* returns the number of bytes written, or a negative value on error */        
@@ -72,16 +72,16 @@ int syscall_write(int fhandle, const void *buffer, int length) {
     gcd_t *gcd;
     device_t *dev;
 
-    dev = device_get(YAMS_TYPECODE_TTY, 0);
-    if (dev == NULL) 
+    dev = device_get(YAMS_TYPECODE_TTY, 0); //from init_startup_fallback
+    if (dev == NULL)  //if error return negative value
         return -1;
 
-    gcd = (gcd_t *)dev->generic_device;
-    if (gcd == NULL)
+    gcd = (gcd_t *)dev->generic_device; //from init_startup_fallback
+    if (gcd == NULL)  //if error return negative value
         return -1;
 
-    gcd->write(gcd, buffer, length);
-    return length;
+    gcd->write(gcd, buffer, length); //from init_startup_fallback
+    return length; 
 }
 
 /**
