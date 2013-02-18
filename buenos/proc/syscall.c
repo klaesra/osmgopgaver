@@ -50,7 +50,7 @@ int syscall_read(int fhandle, void *buffer, int length) {
     gcd_t *gcd;
     device_t *dev;
     int len;
-    
+
     dev = device_get(YAMS_TYPECODE_TTY, 0);
     if (dev == NULL) 
         return -1;
@@ -58,7 +58,7 @@ int syscall_read(int fhandle, void *buffer, int length) {
     gcd = (gcd_t *)dev->generic_device;
     if (gcd == NULL)
         return -1;
-    
+
     len = gcd->read(gcd, buffer, length);
     if (len < 0) 
         return -1;
@@ -71,17 +71,16 @@ int syscall_write(int fhandle, const void *buffer, int length) {
     fhandle = fhandle;
     gcd_t *gcd;
     device_t *dev;
-    
+
     dev = device_get(YAMS_TYPECODE_TTY, 0);
     if (dev == NULL) 
         return -1;
-    
+
     gcd = (gcd_t *)dev->generic_device;
     if (gcd == NULL)
         return -1;
-    
+
     gcd->write(gcd, buffer, length);
-    
     return length;
 }
 
