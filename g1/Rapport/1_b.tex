@@ -3,3 +3,9 @@
 % Explain why enqueue and dequeue must use an argument of type QNode**
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Grunden til, at \verb+enqueue+ og \verb+dequeue+ skal have et argument af typen \verb+QNode**+ er,  
+at når vi ændrer en værdi af \verb+x+, ved at kalde en procedure, så skal vi bruge en pointer til \verb+x+,
+som er adressen til \verb+x+ i hukommelsen. Kort fortalt er det fordi, at procedurer i C evaluerer efter 
+strategien \verb+call-by-value+.
+
