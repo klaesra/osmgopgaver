@@ -6,3 +6,15 @@
 % initprog=[root]readwrite (see page 6ff of the Buenos roadmap for instructions and explanations).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Vores testfil ligger i mappen tests.\\
+
+\noindent Når vi giver vores \verb+syscall_write+ et antal karakterer at skrive til \verb+stdout+, finder den
+de første ledige, uden at vente på eventuel input undervejs. Det betyder, at hvis vi skrev 60, ville den 
+finde 60 tegn, udskrive dem og først derefter afvikle næste systemkald. Man kan altså sørge for, at den 
+kun skriver det, man vil have, ved at give den korrekte længde med på den streng, man vil udskrive.\\
+
+\noindent \verb+syscall_read+ læser en karakter fra \verb+stdin+ og gemmer derefter i en specificeret 
+buffer. \\
+
+\noindent Vores udførte tests giver de forventede output, og vi konkluderer derfor, vi har løst opgaven som 
+ønsket. 

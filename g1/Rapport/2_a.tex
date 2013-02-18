@@ -25,3 +25,19 @@
 % character device (also see drivers/gcd.h).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+For at besvare denne delopgave, har vi tilføjet de ønskede funktioner til filen \verb+proc/syscall.c+. \\
+
+\noindent Både \verb+read+ og \verb+write+ er implementeret ud fra simplificeringen i opgaveteksten. Vi 
+gør ikke brug af \verb+fhandle+ i denne opgave, da vi kun bruger standardfilerne som via \verb+gcd+ 
+håndterer handles automatisk. For at undgå advarsler, når vi kører filerne, starter vi med bare at skrive 
+\verb+fhandle = fhandle;+ både til \verb+syscall_read+ og \verb+syscall_write+.\\
+
+\noindent Vi har fulgt rådet i opgaveteksten, og brugt samme metoder til håndtering af \verb+gcd+, hvorfor 
+man også vil se, at flere af linjerne indeholder faktisk det samme kode. \\
+
+\noindent Udover de 2 funktioner ovenfor, har vi også tilføjet to cases; \verb+SYSCALL_READ+ og 
+\verb+SYSCALL_WRITE+. Her sørger vi for at fange de rigtige cases, og samtidig sørger vi for at putte 
+returværdien i register \verb+v0+, jf. section 6.4 i Buenos Roadmap. Fra vores cases bliver vores 2 
+funktioner \verb+syscall_read+ og \verb+syscall_write+ kaldt med de korrekte argumenter fra registrene
+\verb+a1--a3+.

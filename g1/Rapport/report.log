@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  18 FEB 2013 14:13
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  18 FEB 2013 23:22
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -971,17 +971,41 @@ Underfull \hbox (badness 10000) in paragraph at lines 13--17
 
  []
 
-) (./2_a.tex) (./2_b.tex) [2
+) (./2_a.tex
+Underfull \hbox (badness 10000) in paragraph at lines 29--30
 
-] [3] (./bibliography.tex
+ []
 
-Package natbib Warning: Empty `thebibliography' environment on input line 2.
+[2
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 31--35
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 36--38
+
+ []
+
+) (./2_b.tex
+Underfull \hbox (badness 10000) in paragraph at lines 9--10
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 11--15
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 16--18
+
+ []
 
 )
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 128.
- [4
-
-]
+ [3]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 128.
  (./report.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 128.
@@ -991,8 +1015,8 @@ Package rerunfilecheck Info: File `report.out' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 128.
  ) 
 Here is how much of TeX's memory you used:
- 11412 strings out of 493633
- 163513 string characters out of 3143378
+ 11408 strings out of 493633
+ 163463 string characters out of 3143378
  302311 words of memory out of 3000000
  14514 multiletter control sequences out of 15000+200000
  22177 words of font info for 46 fonts, out of 3000000 for 9000
@@ -1004,10 +1028,10 @@ live/2011/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb></usr/local/texli
 ve/2011/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2011
 /texmf-dist/fonts/type1/urw/palatino/uplbi8a.pfb></usr/local/texlive/2011/texmf
 -dist/fonts/type1/urw/palatino/uplr8a.pfb>
-Output written on report.pdf (4 pages, 80515 bytes).
+Output written on report.pdf (3 pages, 86352 bytes).
 PDF statistics:
- 56 PDF objects out of 1000 (max. 8388607)
- 45 compressed objects within 1 object stream
- 13 named destinations out of 1000 (max. 500000)
+ 50 PDF objects out of 1000 (max. 8388607)
+ 40 compressed objects within 1 object stream
+ 11 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
