@@ -6,10 +6,10 @@
 /* return number of elements in queue */
 int length(QNode* queue) {
   int theLength = 0; 
-    if (queue != NULL) { //There is at least 1 element
+    if (queue != NULL) { //there is at least 1 element
       QNode* current = queue;  
       ++theLength;
-        while (queue != current->link) { //While there are more different elements
+        while (queue != current->link) { //there are more different elements
             ++theLength;
             current = current->link;
         }
@@ -63,7 +63,9 @@ int sum(QNode* queue, int (*val)(Data)) {
   return sumi;
 }
 
-int myStrLen(Data el) {
+
+/* making sure, strlen is a char for the test below */
+int mystrlen(Data el) {
   return strlen ((char*) el); 
 }
 
@@ -77,15 +79,13 @@ int main () {
   printf("laengde =%d\n", length(testNode));
 
   //testing sum
-  printf("sum =%d\n", sum(testNode, myStrLen));
+  printf("sum =%d\n", sum(testNode, mystrlen));
 
   //testing length and dequeue
   printf("vaerdi =%s\n", (char*) dequeue(&testNode));
   printf("laengde =%d\n", length(testNode));
   printf("vaerdi =%s\n", (char*) dequeue(&testNode));
   printf("laengde =%d\n", length(testNode));
-
-
   
   return 0;
 }

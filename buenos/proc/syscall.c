@@ -42,7 +42,9 @@
 #include "drivers/device.h"
 #include "drivers/gcd.h"
 
-
+/* Returns the number of bytes read before reaching the EOF 
+ * or a negative value on error 
+ */
 int syscall_read(int fhandle, void *buffer, int length) {
     fhandle = fhandle;
     gcd_t *gcd;
@@ -63,7 +65,8 @@ int syscall_read(int fhandle, void *buffer, int length) {
 
     return len;
 }
-        
+
+/* returns the number of bytes written, or a negative value on error */        
 int syscall_write(int fhandle, const void *buffer, int length) {
     fhandle = fhandle;
     gcd_t *gcd;
