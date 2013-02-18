@@ -1,0 +1,24 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Implement functions enqueue and dequeue (described above), and a length 
+%function.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Vores længde-funktion returnerer antallet af elementer i en kø. Den starter med længden 0, og er der 1 
+eller flere elementer, laves der en pointer til den nuværende node i køen, som vi kalder current, og lægger 
+en til. Herefter går vi ned i while-løkken, som bliver ved at tjekke op på, om elementerne i køen er ens, 
+lægger en til længden hver gang, de ikke er ens, og stopper så, når den rammer første element i køen 
+igen. \\
+
+\noindent \verb+enqueue+ tilføjer et element til enden af vores kø ved først at allokere pladsen til det vi 
+gerne vil indsætte. Hvis det ikke er muligt at allokere den ønskede hukommelse, printer vi beskeden "Out 
+of memory". I næste if-sætning, kigger vi på, om køen er tom, er den det, indsætter vi et element, som så
+vil pege på sig selv. Hvis der i forvejen er flere elementer, indsætter vi stadig det ønskede element, men 
+opdaterer samtidig alle pegerne, så de står korrekt efter tilføjelsen af det nye element. \\
+
+\noindent \verb+dequeue+ gør brug af samme tankegang som ovenfor, bare "med modsat fortegn" - vi 
+fjerner altså et element her i stedet for at tilføje det, og sørger for også at frigøre pladsen fra det element, 
+vi har fjernet.\\
+
+\noindent Vi har testet alle 3 funktioner i \verb+main()+, hvor vi først indsætter elementer i køen, for derefter
+at tjekke længden. Derefter fjerner vi elementer, og tjekker samtidig, at længde-funktionen også virker her.

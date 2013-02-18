@@ -1,0 +1,27 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Implement system calls read and write with the behaviour outlined below 
+% (also described in Section 6.4 of the Buenos roadmap). 
+% The system call interface in tests/lib.c already provides wrappers for these calls, 
+% and their system call num- bers are defined in proc/syscall.h. 
+% It is not necessary to make the system call code ”bullet-proof ” 
+% (as it is called in the Buenos roadmap).
+%
+%% i. int syscall_read(int fhandle, void *buffer, int length);
+% Read at most length bytes from the file identified by fhandle 
+% (at the current file position) into buffer,  advancing the file position. 
+% Returns the number of bytes actually read (before reaching the end of the file), 
+% or a negative value on error. 
+% Simplification: Your implementation should only read from FILEHANDLE STDIN, 
+% (number 0 in proc/syscall.h), using the generic character device driver.
+%
+%% ii. int syscall_write(int fhandle, const void *buffer, int length); 
+% Write length bytes from buffer to the open file identified by fhandle, 
+% starting at the current position and advancing the position. 
+% Returns the number of bytes actually written, or a negative value on error.
+% Simplification: Your implementation should only write to FILEHANDLE STDOUT, 
+% (number 1 in proc/syscall.h), using the generic character device driver.
+% Look at the code inside init startup fallback (file init/main.c) to see how to acquire and use the generic 
+% character device (also see drivers/gcd.h).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
