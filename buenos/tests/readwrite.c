@@ -1,10 +1,13 @@
 #include "tests/lib.h"
-#include "proc/syscall.h"
 
 int main(void)
 {
-    syscall_read(FILEHANDLE_STDIN, (void *)FILEHANDLE_STDOUT, 10);
-    syscall_write(FILEHANDLE_STDOUT, (const void *)FILEHANDLE_STDIN, 10);
-
+    int buf[63];
+    syscall_read(stdin, buf, 63);
+    syscall_write(stdout, buf, 63);
+    syscall_write(stdout, "\n", 1);
+    
+    syscall_halt();
+    
     return 0;
 }

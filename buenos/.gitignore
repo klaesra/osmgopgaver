@@ -5,6 +5,7 @@ tests/halt
 tests/readwrite
 fyams.harddisk
 store.file
+util/tfstool
 
 # Compiled source #
 ###################
@@ -14,6 +15,7 @@ store.file
 *.exe
 *.o
 *.so
+*.map
 
 # Packages #
 ############
