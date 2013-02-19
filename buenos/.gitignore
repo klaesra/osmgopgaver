@@ -16,6 +16,7 @@ util/tfstool
 *.o
 *.so
 *.map
+*.d
 
 # Packages #
 ############
