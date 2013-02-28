@@ -35,6 +35,7 @@
  */
 #include "kernel/cswitch.h"
 #include "proc/syscall.h"
+#include "proc/process.h"
 #include "kernel/halt.h"
 #include "kernel/panic.h"
 #include "lib/libc.h"
@@ -84,6 +85,22 @@ int syscall_write(int fhandle, const void *buffer, int length) {
     return length; 
 }
 
+int syscall_exec(const char *filename){
+    process_id_t pid;
+    pid = process_spawn(filename);
+    return pid;
+}
+
+void syscall_exit(int retval){
+    process_finish(retval);
+}
+
+int syscall_join(int pid){
+    int retval = process_join(pid);
+    return retval;
+}
+
+
 /**
  * Handle system calls. Interrupts are enabled when this function is
  * called.
@@ -117,6 +134,17 @@ void syscall_handle(context_t *user_context)
             syscall_write(user_context->cpu_regs[MIPS_REGISTER_A1],
                           (const void *)user_context->cpu_regs[MIPS_REGISTER_A2],
                           user_context->cpu_regs[MIPS_REGISTER_A3]);
+        break;
+    case SYSCALL_EXEC:
+        user_context->cpu_regs[MIPS_REGISTER_V0] =
+            syscall_exec((const char *)user_context->cpu_regs[MIPS_REGISTER_A1]);
+        break;
+    case SYSCALL_EXIT:
+        syscall_exit(user_context->cpu_regs[MIPS_REGISTER_A1]);
+        break;
+    case SYSCALL_JOIN:
+        user_context->cpu_regs[MIPS_REGISTER_V0] =
+            syscall_join(user_context->cpu_regs[MIPS_REGISTER_A1]);
         break;
     default: 
         KERNEL_PANIC("Unhandled system call\n");

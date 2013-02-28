@@ -1,0 +1,129 @@
+% \begin{sloppypar} <-- fikser de afsnit, hvor der bruges \lstinline og
+% der spilder ud i marginen.
+
+
+%\includeonly{userguide}
+
+\documentclass[a4paper,10pt]{article}
+
+% NOTE: Missing packages? Try texlive-latex-extra
+% TIP (vim): map <F5> :!make view<RETURN><RETURN> 
+
+%\usepackage[danish]{babel,varioref}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% fonts
+%\usepackage{charter}
+%\usepackage{euler}
+%\usepackage{palatino}
+\usepackage{mathpazo}
+
+\usepackage{float} % for [H] figure option'en
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage[breaklinks=true,colorlinks=false,urlcolor=blue]{hyperref}
+\usepackage{breakurl} % due to http://www.tex.ac.uk/cgi-bin/texfaq2html?label=breaklinks
+\usepackage{color}
+\usepackage{amsmath}
+
+\usepackage[numbers]{natbib}
+\usepackage{textcomp}
+\usepackage{listings}
+\usepackage{verbatim}
+\usepackage[table]{xcolor}
+\usepackage[textfont={small,it}]{caption}
+\usepackage{subfig}
+\usepackage[]{algorithm2e}
+
+
+
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
+
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\definecolor{darkred}{rgb}{255,1,0.120}
+\lstset{language=Pascal,
+        %captionpos=b,
+	tabsize=4,
+	frame=lines,
+	%keywordstyle=\color{blue},
+	commentstyle=\color{darkgreen},
+	stringstyle=\color{red},
+	numberstyle=\tiny,
+	%numbersep=5pt,
+	breaklines=true,
+	showstringspaces=false,
+	basicstyle=\ttfamily,
+	%title= File: \lstname,
+	emph={label},
+}
+
+\title{Styresystemer og Multiprogrammering}
+\author{Jenny-Margrethe Vej, Klaes Bo Rasmussen}
+\makeatletter % enable use of \@ special variables
+\hypersetup{
+	pdftitle={\@title},
+	pdfauthor={\@author}
+}
+
+\newcommand{\code}[1] {\lstinline!#1!}
+
+\newenvironment{codeblock}[1][0.99] {
+	\begin{center}
+	\begin{minipage}
+	{#1\textwidth}
+}{
+	\end{minipage}
+	\end{center}
+}
+
+\begin{document}
+\thispagestyle{empty}
+\vspace*{\stretch{0}}
+\begin{flushright}
+   {\Huge\textbf{\@title}}\\[3mm]
+   \rule{\linewidth}{2mm}\\[3mm]
+   {\Large\textbf{\textit{G-opgave \#1}}}\\
+   \vspace{12cm}
+   {\normalsize \textbf{Jenny-Margrethe Vej}
+   \\(\url{rwj935@alumni.ku.dk})}
+   \\
+   {\normalsize \textbf{Klaes Bo Rasmussen}
+   \\(\url{twb822@alumni.ku.dk})}
+   \\
+	\vspace*{2cm}
+   {\normalsize Datalogisk Institut, Københavns Universitet}\\
+   {\normalsize Blok 3 - 2013}\\
+\end{flushright}
+%\vspace*{\stretch{2}}
+\clearpage
+
+\section*{A simple queue using a linked list}
+Vi har bygget koden op i samme rækkefølge som \verb+queue.h+, og har ydermere lavet en 
+\verb+Makefile+, således man kan køre vores c-fil ved brug af kommandoen \verb+make+ i sin terminal.
+\subsection*{(a)}
+\input{1_a}
+\subsection*{(b)}
+\input{1_b}
+\subsection*{(c)}
+\input{1_c}
+\section*{Buenos system calls for basic I/O}
+\subsection*{(a)}
+\input{2_a}
+\subsection*{(b)}
+\input{2_b}
+
+%\pagenumbering{roman}
+%\setcounter{tocdepth}{3}
+%\thispagestyle{empty}
+%\clearpage
+%\renewcommand{\labelitemi}{$\cdot$}
+%\input{bibliography}
+
+%\setlength{\parindent}{2em}
+%\setlength{\parskip}{2ex}
+%\renewcommand{\arraystretch}{1.25}
+%\setcounter{page}{1}
+\end{document}
+

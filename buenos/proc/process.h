@@ -39,7 +39,14 @@
 
 typedef int process_id_t;
 
-void process_start(const char *executable);
+//defining the different process states:
+typedef enum {
+    PROCESS_FREE,
+    PROCESS_RUNNING,
+    PROCESS_ZOMBIE
+} process_state_t;
+
+void process_start(const process_id_t pid);
 
 #define USERLAND_STACK_TOP 0x7fffeffc
 
@@ -48,9 +55,20 @@ void process_start(const char *executable);
 
 #define PROCESS_MAX_PROCESSES 32
 
+#define PROCESS_MAX_EXECUTABLE_NAME_LENGTH 32
+
 typedef struct {
-  /* STUB: Put something here. */
-  int dummy; /* Remove this. */
+    /* process state */
+    process_state_t state;
+
+    /* int for saving return value */
+    int retval;
+
+    /* pointer to the executeable this process is running */
+    char executable[PROCESS_MAX_EXECUTABLE_NAME_LENGTH];
+    
+    /* PID - process id number, used to identifying each process */
+    process_id_t process_id;
 } process_control_block_t;
 
 /* Initialize the process table.  This must be called during kernel

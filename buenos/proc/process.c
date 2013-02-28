@@ -44,6 +44,7 @@
 #include "drivers/yams.h"
 #include "vm/vm.h"
 #include "vm/pagepool.h"
+#include "kernel/sleepq.h"
 
 /** @name Process startup
  *
@@ -51,6 +52,11 @@
  */
 
 process_control_block_t process_table[PROCESS_MAX_PROCESSES];
+
+
+/* Lock which must be helt before accessing process_table */
+
+spinlock_t process_table_slock;
 
 /**
  * Starts one userland process. The thread calling this function will
@@ -64,7 +70,7 @@ process_control_block_t process_table[PROCESS_MAX_PROCESSES];
  * @executable The name of the executable to be run in the userland
  * process
  */
-void process_start(const char *executable)
+void process_start(const process_id_t pid)
 {
     thread_table_t *my_entry;
     pagetable_t *pagetable;
@@ -79,6 +85,7 @@ void process_start(const char *executable)
     interrupt_status_t intr_status;
 
     my_entry = thread_get_current_thread_entry();
+    my_entry->process_id = pid;
 
     /* If the pagetable of this thread is not NULL, we are trying to
        run a userland process for a second time in the same thread.
@@ -92,7 +99,7 @@ void process_start(const char *executable)
     my_entry->pagetable = pagetable;
     _interrupt_set_state(intr_status);
 
-    file = vfs_open((char *)executable);
+    file = vfs_open(process_table[pid].executable);
     /* Make sure the file existed and was a valid ELF file */
     KERNEL_ASSERT(file >= 0);
     KERNEL_ASSERT(elf_parse_header(&elf, file));
@@ -188,26 +195,97 @@ void process_start(const char *executable)
     KERNEL_PANIC("thread_goto_userland failed.");
 }
 
+/* Initialize process table.
+ * Should be called before any other process-related calls */
 void process_init() {
-  KERNEL_PANIC("Not implemented.");
+    spinlock_reset(&process_table_slock);
+    for (process_id_t pid = 0 ; pid < PROCESS_MAX_PROCESSES ; pid++) {
+        process_table[pid].state = PROCESS_FREE;
+    }
 }
 
+/* Load and run the executable as a new process in a new thread
+ * Argument : executable file name . Returns: PID of new process. */
 process_id_t process_spawn(const char *executable) {
-  executable = executable;
-  KERNEL_PANIC("Not implemented.");
-  return 0; /* Dummy */
+    interrupt_status_t intr_status;
+
+    intr_status = _interrupt_disable();
+    spinlock_acquire(&process_table_slock);
+
+    for (process_id_t pid = 0 ; pid < PROCESS_MAX_PROCESSES ; pid++) {
+        if (process_table[pid].state == PROCESS_FREE) {
+            kprintf("a process is free! \n");
+                
+            // Copy the name of the process to be executed to the free process
+            stringcopy(process_table[pid].executable, executable, strlen(executable));
+
+            kprintf("This is the program we try to run: %s\n", executable);
+            
+            kprintf("This is whats in the executable name: %s\n", process_table[pid].executable);
+                
+            
+            //create thread with the process start functino, casting it to the necessary
+            TID_t newThread = thread_create((void (*)(uint32_t))process_start, pid);
+            thread_run(newThread);
+            spinlock_release(&process_table_slock);
+            _interrupt_set_state(intr_status);
+            kprintf("we did all we had to and we return\n");
+                
+            return pid;
+        }
+    }
+    KERNEL_PANIC("No free processes.");
+    return 0; /* Dummy */
 }
 
-/* Stop the process and the thread it runs in. Sets the return value as well */
+/* Stop the process and the thread it runs in. Sets the return value to
+ * the argument */
 void process_finish(int retval) {
-  retval=retval;
-  KERNEL_PANIC("Not implemented.");
+    thread_table_t *my_entry;
+    interrupt_status_t intr_status;
+    process_id_t pid = process_get_current_process();
+    
+    intr_status = _interrupt_disable();
+    spinlock_acquire(&process_table_slock);
+
+    process_table[pid].retval = retval;
+    process_table[pid].state = PROCESS_ZOMBIE;
+    
+    spinlock_release(&process_table_slock);
+    _interrupt_set_state(intr_status);
+
+    sleepq_wake(&process_table[pid]);
+    
+    my_entry = thread_get_current_thread_entry();    
+
+    vm_destroy_pagetable(my_entry->pagetable);
+    my_entry->pagetable = NULL;
+
+    thread_finish();
 }
 
+/* Wait for the given process to terminate, returning its return value.
+ * and marking the process table entry as free */
 int process_join(process_id_t pid) {
-  pid=pid;
-  KERNEL_PANIC("Not implemented.");
-  return 0; /* Dummy */
+    interrupt_status_t intr_status;
+    int retval;
+
+    intr_status = _interrupt_disable();
+    spinlock_acquire(&process_table_slock);
+    while (process_table[pid].state != PROCESS_ZOMBIE) {
+        sleepq_add(&process_table[pid]); //sleep on the pid address in the process table
+        spinlock_release(&process_table_slock);
+        thread_switch();
+        spinlock_acquire(&process_table_slock);
+    }
+    process_table[pid].state = PROCESS_FREE;
+    retval = process_table[pid].retval;
+         
+    spinlock_release(&process_table_slock);
+    _interrupt_set_state(intr_status);
+    
+    
+    return retval; /* return retval from the process */
 }
 
 
