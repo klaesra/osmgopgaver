@@ -98,7 +98,7 @@ void process_start(const process_id_t pid)
     intr_status = _interrupt_disable();
     my_entry->pagetable = pagetable;
     _interrupt_set_state(intr_status);
-
+    //kprintf("This name is saved in executable for the given pid: %s\n", process_table[pid].executable);
     file = vfs_open(process_table[pid].executable);
     /* Make sure the file existed and was a valid ELF file */
     KERNEL_ASSERT(file >= 0);
@@ -198,9 +198,9 @@ void process_start(const process_id_t pid)
 /* Initialize process table.
  * Should be called before any other process-related calls */
 void process_init() {
-    spinlock_reset(&process_table_slock);
+    spinlock_reset(&process_table_slock); //reset spinlock
     for (process_id_t pid = 0 ; pid < PROCESS_MAX_PROCESSES ; pid++) {
-        process_table[pid].state = PROCESS_FREE;
+        process_table[pid].state = PROCESS_FREE; //set process states to free
     }
 }
 
@@ -208,29 +208,29 @@ void process_init() {
  * Argument : executable file name . Returns: PID of new process. */
 process_id_t process_spawn(const char *executable) {
     interrupt_status_t intr_status;
-
+    process_id_t pid; //initialize the darn pid!
+    
     intr_status = _interrupt_disable();
     spinlock_acquire(&process_table_slock);
 
-    for (process_id_t pid = 0 ; pid < PROCESS_MAX_PROCESSES ; pid++) {
+    for (pid = 0 ; pid < PROCESS_MAX_PROCESSES ; pid++) {
         if (process_table[pid].state == PROCESS_FREE) {
-            kprintf("a process is free! \n");
-                
-            // Copy the name of the process to be executed to the free process
-            stringcopy(process_table[pid].executable, executable, strlen(executable));
+            //kprintf("A process is free! \n");
 
-            kprintf("This is the program we try to run: %s\n", executable);
+            // Copy the name of the process to be executed to the free process
+            stringcopy(process_table[pid].executable, executable, PROCESS_MAX_EXECUTABLE_NAME_LENGTH);
+
+            // Set the state of the used process to running
+            process_table[pid].state = PROCESS_RUNNING;
             
-            kprintf("This is whats in the executable name: %s\n", process_table[pid].executable);
-                
-            
-            //create thread with the process start functino, casting it to the necessary
+            //create thread with the process_start function, casting it to the necessary
             TID_t newThread = thread_create((void (*)(uint32_t))process_start, pid);
             thread_run(newThread);
             spinlock_release(&process_table_slock);
             _interrupt_set_state(intr_status);
-            kprintf("we did all we had to and we return\n");
-                
+
+            //     kprintf("%s:%d\n", executable, pid); // apparently we kept using same pid for each process DOH!
+            
             return pid;
         }
     }
@@ -250,16 +250,16 @@ void process_finish(int retval) {
 
     process_table[pid].retval = retval;
     process_table[pid].state = PROCESS_ZOMBIE;
-    
-    spinlock_release(&process_table_slock);
-    _interrupt_set_state(intr_status);
 
-    sleepq_wake(&process_table[pid]);
-    
-    my_entry = thread_get_current_thread_entry();    
-
+    //Destroy pagetable as we should.
+    my_entry = thread_get_current_thread_entry(); 
     vm_destroy_pagetable(my_entry->pagetable);
     my_entry->pagetable = NULL;
+
+    sleepq_wake(&process_table[pid]); // Wake up the process
+
+    spinlock_release(&process_table_slock);
+    _interrupt_set_state(intr_status);
 
     thread_finish();
 }
@@ -273,7 +273,8 @@ int process_join(process_id_t pid) {
     intr_status = _interrupt_disable();
     spinlock_acquire(&process_table_slock);
     while (process_table[pid].state != PROCESS_ZOMBIE) {
-        sleepq_add(&process_table[pid]); //sleep on the pid address in the process table
+        //sleep on the pid address in the process table
+        sleepq_add(&process_table[pid]); 
         spinlock_release(&process_table_slock);
         thread_switch();
         spinlock_acquire(&process_table_slock);
@@ -283,9 +284,9 @@ int process_join(process_id_t pid) {
          
     spinlock_release(&process_table_slock);
     _interrupt_set_state(intr_status);
-    
-    
+
     return retval; /* return retval from the process */
+
 }
 
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Arch Linux) (format=pdflatex 2013.1.20)  26 FEB 2013 00:05
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Arch Linux) (format=pdflatex 2013.3.1)  4 MAR 2013 17:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -897,47 +897,41 @@ File: ot1zplm.fd 2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
 ) [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (0.5646pt too wide) in paragraph at lines 104--108
-\T1/ppl/m/n/10 1. We de-fined the re-quired datas-truc-ture []\T1/cmtt/m/n/10 p
-rocess\_control\_block\_t \T1/ppl/m/n/10 within
+Overfull \hbox (30.84662pt too wide) in paragraph at lines 109--116
+\T1/ppl/m/n/10 three dif-fer-ent states, PRO-CESS_FREE, PRO-CESS_RUNNING or PRO
+-CESS_ZOMBIE,
  []
 
 
-! LaTeX Error: \verb ended by end of line.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.112 ...cess\_join+, \verb+process\_finish and it
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \hbox (48.95306pt too wide) in paragraph at lines 111--114
-[]\T1/ppl/m/n/10 It keeps a re-turn value, which is used in []\T1/cmtt/m/n/10 p
-rocess\_join\T1/ppl/m/n/10 , []\T1/cmtt/m/n/10 process\_finish and it\T1/ppl/m/
-n/10 also
+Overfull \hbox (33.61064pt too wide) in paragraph at lines 152--159
+\T1/ppl/m/n/10 copy the name of the pro-gram we want to run to the []\T1/cmtt/m
+/n/10 process_table[pid].executable
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 164.
+
+Overfull \hbox (9.65872pt too wide) in paragraph at lines 178--184
+\T1/ppl/m/n/10 pro-cess ta-ble for the given pid, also set the state of the pro
+-cess to []\T1/cmtt/m/n/10 PROCESS_ZOMBIE\T1/ppl/m/n/10 .
+ []
+
 [2
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 164.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 258.
+ [3]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 258.
  (./report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 164.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 164.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 258.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 258.
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 164.
+(rerunfilecheck)             Checksum: 1A3E8D838E03E5CFB8CB119B78983517;217.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 258.
  ) 
 Here is how much of TeX's memory you used:
- 10463 strings out of 493488
- 149818 string characters out of 3146892
- 265706 words of memory out of 3000000
- 13606 multiletter control sequences out of 15000+200000
+ 10470 strings out of 493488
+ 149872 string characters out of 3146893
+ 267706 words of memory out of 3000000
+ 13611 multiletter control sequences out of 15000+200000
  19797 words of font info for 43 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
  53i,5n,92p,262b,347s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -946,10 +940,10 @@ exmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-dist/fonts/type1/public
 /cm-super/sftt1000.pfb></usr/share/texmf-dist/fonts/type1/urw/palatino/uplb8a.p
 fb></usr/share/texmf-dist/fonts/type1/urw/palatino/uplbi8a.pfb></usr/share/texm
 f-dist/fonts/type1/urw/palatino/uplr8a.pfb>
-Output written on report.pdf (2 pages, 77427 bytes).
+Output written on report.pdf (3 pages, 90168 bytes).
 PDF statistics:
- 39 PDF objects out of 1000 (max. 8388607)
- 30 compressed objects within 1 object stream
- 5 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 56 PDF objects out of 1000 (max. 8388607)
+ 46 compressed objects within 1 object stream
+ 7 named destinations out of 1000 (max. 500000)
+ 25 words of extra memory for PDF output out of 10000 (max. 10000000)
 
