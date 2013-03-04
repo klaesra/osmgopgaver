@@ -1,0 +1,178 @@
+% \begin{sloppypar} <-- fikser de afsnit, hvor der bruges \lstinline og
+% der spilder ud i marginen.
+
+
+%\includeonly{userguide}
+
+\documentclass[a4paper,10pt]{article}
+
+% NOTE: Missing packages? Try texlive-latex-extra
+% TIP (vim): map <F5> :!make view<RETURN><RETURN> 
+
+%\usepackage[danish]{babel,varioref}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% fonts
+%\usepackage{charter}
+%\usepackage{euler}
+%\usepackage{palatino}
+\usepackage{mathpazo}
+
+\usepackage{float} % for [H] figure option'en
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage[breaklinks=true,colorlinks=false,urlcolor=blue]{hyperref}
+\usepackage{breakurl} % due to http://www.tex.ac.uk/cgi-bin/texfaq2html?label=breaklinks
+\usepackage{color}
+\usepackage{amsmath}
+
+\usepackage[numbers]{natbib}
+\usepackage{textcomp}
+\usepackage{listings}
+\usepackage{verbatim}
+\usepackage[table]{xcolor}
+\usepackage[textfont={small,it}]{caption}
+\usepackage{subfig}
+%\usepackage[]{algorithm2e}
+
+
+
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
+
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\definecolor{darkred}{rgb}{255,1,0.120}
+\lstset{language=Pascal,
+        %captionpos=b,
+	tabsize=4,
+	frame=lines,
+	%keywordstyle=\color{blue},
+	commentstyle=\color{darkgreen},
+	stringstyle=\color{red},
+	numberstyle=\tiny,
+	%numbersep=5pt,
+	breaklines=true,
+	showstringspaces=false,
+	basicstyle=\ttfamily,
+	%title= File: \lstname,
+	emph={label},
+}
+
+\title{Styresystemer og Multiprogrammering}
+\author{Jenny-Margrethe Vej, Klaes Bo Rasmussen}
+\makeatletter % enable use of \@ special variables
+\hypersetup{
+	pdftitle={\@title},
+	pdfauthor={\@author}
+}
+
+\newcommand{\code}[1] {\lstinline!#1!}
+
+\newenvironment{codeblock}[1][0.99] {
+	\begin{center}
+	\begin{minipage}
+	{#1\textwidth}
+}{
+	\end{minipage}
+	\end{center}
+}
+
+\begin{document}
+\thispagestyle{empty}
+\vspace*{\stretch{0}}
+\begin{flushright}
+   {\Huge\textbf{\@title}}\\[3mm]
+   \rule{\linewidth}{2mm}\\[3mm]
+   {\Large\textbf{\textit{G-opgave \#3}}}\\
+   \vspace{12cm}
+   {\normalsize \textbf{Jenny-Margrethe Vej}
+   \\(\url{rwj935@alumni.ku.dk})}
+   \\
+   {\normalsize \textbf{Klaes Bo Rasmussen}
+   \\(\url{twb822@alumni.ku.dk})}
+   \\
+	\vspace*{2cm}
+   {\normalsize Datalogisk Institut, Københavns Universitet}\\
+   {\normalsize Blok 3 - 2013}\\
+\end{flushright}
+%\vspace*{\stretch{2}}
+\clearpage
+
+
+\section{Locks and condition variables for kernel threads in Buenos}
+1. This was our understanding of the first task, it may be wrong, but we
+would really like some feedback as to how it's wrong, perhaps just
+verbal feedback.
+
+\vspace{1pc}
+
+\verb+lock_reset+ 
+
+This resets the spinlock and the \verb+locked+ variable in the given
+\verb+lock+.
+
+\vspace{0.5pc}
+
+\verb+lock_acquire+
+
+Saves the interrupt status, setting it to disabled. Then acquires
+spinlock for the given lock. It runs and keeps checking if the lock is
+still locked. If so, it adds the lock to the sleep queue, releases the
+spinlock and switches thread. When it is no longer locked, it locks it
+again so its locked to itself and the code can run without
+disruptions.
+
+\vspace{0.5pc}
+
+\verb+lock_release+
+
+Disables interrupts, saving the status. Then acquires the spinlock. If
+lock is no longer locked, wake it up and continue to release spinlock
+and set the interrupt status back to its former glory.
+
+\vspace{1pc}
+
+2. This is how we understood the conditional statements, but reading
+at people's reaction to giving lock as an argument to condition signal
+makes it seem this could be wrong, we hope to get a better explanation
+for this part, the code is pretty self explanatory, as short as it is.
+
+
+\section{One-Lane Synchronisation}
+
+1. When syncronising a stretch of road like this, it would be
+preferrable to account for different times of day when traffic amount
+changes. But if we consider a simple solution:
+
+Let the first car that gets to the crossing be put into the queue
+first, let it pass. If no other cars get to the crossing while the
+first is passing it, reset the queue when the car exits.
+
+If more cars come, open up for new cars going in the same
+direction. When a car approaches from the other direction, set a timer
+of 1 minute before cars need to stop from the first direction, and
+open up for the other direction, given the same rules. Again, if there
+are no cars as the last crossing car leaves the narrow path, reset the
+queue.
+
+2. We did not manage to complete this part of the task yet.
+
+3. And not this either.
+
+
+
+
+%\pagenumbering{roman}
+%\setcounter{tocdepth}{3}
+%\thispagestyle{empty}
+%\clearpage
+%\renewcommand{\labelitemi}{$\cdot$}
+%\input{bibliography}
+
+%\setlength{\parindent}{2em}
+%\setlength{\parskip}{2ex}
+%\renewcommand{\arraystretch}{1.25}
+%\setcounter{page}{1}
+\end{document}
+

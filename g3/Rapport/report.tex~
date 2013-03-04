@@ -1,0 +1,259 @@
+% \begin{sloppypar} <-- fikser de afsnit, hvor der bruges \lstinline og
+% der spilder ud i marginen.
+
+
+%\includeonly{userguide}
+
+\documentclass[a4paper,10pt]{article}
+
+% NOTE: Missing packages? Try texlive-latex-extra
+% TIP (vim): map <F5> :!make view<RETURN><RETURN> 
+
+%\usepackage[danish]{babel,varioref}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% fonts
+%\usepackage{charter}
+%\usepackage{euler}
+%\usepackage{palatino}
+\usepackage{mathpazo}
+
+\usepackage{float} % for [H] figure option'en
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage[breaklinks=true,colorlinks=false,urlcolor=blue]{hyperref}
+\usepackage{breakurl} % due to http://www.tex.ac.uk/cgi-bin/texfaq2html?label=breaklinks
+\usepackage{color}
+\usepackage{amsmath}
+
+\usepackage[numbers]{natbib}
+\usepackage{textcomp}
+\usepackage{listings}
+\usepackage{verbatim}
+\usepackage[table]{xcolor}
+\usepackage[textfont={small,it}]{caption}
+\usepackage{subfig}
+%\usepackage[]{algorithm2e}
+
+
+
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
+
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\definecolor{darkred}{rgb}{255,1,0.120}
+\lstset{language=Pascal,
+        %captionpos=b,
+	tabsize=4,
+	frame=lines,
+	%keywordstyle=\color{blue},
+	commentstyle=\color{darkgreen},
+	stringstyle=\color{red},
+	numberstyle=\tiny,
+	%numbersep=5pt,
+	breaklines=true,
+	showstringspaces=false,
+	basicstyle=\ttfamily,
+	%title= File: \lstname,
+	emph={label},
+}
+
+\title{Styresystemer og Multiprogrammering}
+\author{Jenny-Margrethe Vej, Klaes Bo Rasmussen}
+\makeatletter % enable use of \@ special variables
+\hypersetup{
+	pdftitle={\@title},
+	pdfauthor={\@author}
+}
+
+\newcommand{\code}[1] {\lstinline!#1!}
+
+\newenvironment{codeblock}[1][0.99] {
+	\begin{center}
+	\begin{minipage}
+	{#1\textwidth}
+}{
+	\end{minipage}
+	\end{center}
+}
+
+\begin{document}
+\thispagestyle{empty}
+\vspace*{\stretch{0}}
+\begin{flushright}
+   {\Huge\textbf{\@title}}\\[3mm]
+   \rule{\linewidth}{2mm}\\[3mm]
+   {\Large\textbf{\textit{G-opgave \#2}}}\\
+   \vspace{12cm}
+   {\normalsize \textbf{Jenny-Margrethe Vej}
+   \\(\url{rwj935@alumni.ku.dk})}
+   \\
+   {\normalsize \textbf{Klaes Bo Rasmussen}
+   \\(\url{twb822@alumni.ku.dk})}
+   \\
+	\vspace*{2cm}
+   {\normalsize Datalogisk Institut, Københavns Universitet}\\
+   {\normalsize Blok 3 - 2013}\\
+\end{flushright}
+%\vspace*{\stretch{2}}
+\clearpage
+
+\section{Types and Functions for User Processes in Buenos}
+
+1. We defined the required datastructure
+ \verb+process_control_block_t+ within process.h. For now it only
+contains what we belive to be required to complete the given task. It
+is as minimalistic as possible.
+
+We can save a state, given by the \verb+enum process_state_t+. There
+are only three different states, PROCESS\_FREE, PROCESS\_RUNNING or
+PROCESS\_ZOMBIE, keeping the naming convention with
+``fileName\_name''. FREE is for processes that are ready to take on a
+new thread. RUNNING states that the process is currently in use by
+another thread. ZOMBIE is for processes that are done running but have
+yet to be joined so they become FREE again.
+
+It keeps a return value, which is
+used in \verb+process_join+, \verb+process_finish+ and it
+also acts as the exit code for \verb+syscall_exit+.
+
+It contains a small buffer which is used for saving the name of the
+executeable to be run, currently programs can have a name of maximum
+32 chars.
+
+Last, and most importantly, it keeps track of which process it is with
+a process identifier. This process id is used any time a process is
+called upon for any functionality.
+
+\vspace{1pc}
+
+2. We have implemented all the given functions in the second task
+inside the file \verb+process.c+. I will explain in the order they are
+inside the file.
+
+\vspace{0.5pc}
+
+\verb+process_init()+
+
+We initialize the processes by first resetting the spinlock on the
+spinlock variable we have defined as
+\verb+process_table_slock+. Then we run through all of the processes
+and set their state to \verb+PROCESS_FREE+.
+
+\vspace{0.5pc}
+
+\verb+_process_id_t process_spawn(const char *executable)+
+
+We have followed buenos roadmap for ``Figure 5.1: Code executed by a
+thread wishing to go to sleep.'' So, first we disable interrupts, then
+acquire the spinlock for the process table.
+
+We look for any free processes in a for loop, as it is now, if none
+are free, we simply throw a kernel panic. If we find a free process,
+we use its id, pid, and copy the name of the program we want to run to
+the \verb+process_table[pid].executable+ variable using the function
+\verb+stringcopy+ included from \verb+lib/libc.h+. We also set the
+state of the process to \verb+PROCESS_RUNNING+ so it won't be used
+again by other threads. 
+
+Then we create a new thread which runs \verb+process_start+ on the
+process. In turn, we have changed the \verb+process_start+ function
+to accept a \verb+pid+ rather than a file to be executed. And in
+\verb+main.c+ we now call \verb+process_spawn+ and
+\verb+process_join+ rather than \verb+process_start+. The new thread
+is started with \verb+thread_run+. Then we need to release the
+spinlock and set the interrupt status to what it was before we
+disabled it. Lastly we return the \verb+pid+ of the process we spawned
+a thread on.
+
+\vspace{0.5pc}
+
+\verb+void process_finish(int retval)+
+
+Create a variable which can contain a \verb+thread_table_t+, and one
+for holding the interrupt status. Also get and save the pid for the
+current process.
+
+Disable interrupts and acquire the spinlock. Then set the retval value
+in the process table for the given pid, also set the state of the
+process to \verb+PROCESS_ZOMBIE+.  Then destroy the current pagetable
+as instructed. We are not sure if this could be done after the
+spinlock instead, but you requested that we moved the spinlock to just
+before the \verb+thread_finish+ call, so now it's like this.
+
+Wake up the process sleeping on the address of
+\verb+process_table[pid]+. Release the spinlock and set the interrupt
+status back to what it was before the spinlock. Then let the thread
+finish with \verb+thread_finish()+.
+
+\vspace{0.5pc}
+
+\verb+int process_join(process_id_t pid)+
+
+We initialize the usual interrupt status valuable, and this time also
+an integer retval. Disable interrupts and acquire the spinlock. Then
+we wait while the process given by \verb+pid+ is not a zombie. During
+this we add the process to the sleep queue, release the spinlock and
+switch thread before we acquire the spinlock again. All as prescribed
+by buenos roadmap figure 5.2.
+
+When we are done waiting in the while loop, we set the state of the
+given process to \verb+PROCESS_FREE+, and the variable \verb+retval+ to the
+return value from the process. Release the kraken! Or rather spinlock,
+and set the interrupt status back to what it was before. Then return
+with \verb+retval+.
+
+\vspace{0.5pc}
+
+All these functions were so short that we didn't find it necessary to
+write extra helper functions outside. So to keep it simple, we wrote
+all the extra code in the predefined functions.
+
+\section{System Calls for User Process Control in Buenos}
+
+Making the system calls were all very straight forward as most of the
+functionality for them was implemented in the first task, but we will
+just descripe them here shortly. 
+
+1. \verb+syscall_exec+ runs \verb+process_spawn+ with the given
+filename as an argument, and then saves the returned \verb+pid+ to
+register \verb+V0+.
+
+2. \verb+syscall_exit+ runs \verb+process_finish+ with a given
+return value. It saves nothing, but the return value should be
+positive, as negative values would indicate an error in
+\verb+syscall_join+. 
+
+3. \verb+syscall_join+ runs \verb+process_join+ with the given
+\verb+pid+ and saves the return value from this, to \verb+V0+. A
+negative value indicates that there was some error along the way.
+
+\section{Running the tests}
+We mostly worked with the exec test handed out, and of course had to
+write the hello world test to the disk aswell. Now both run seemingly
+flawlessly. exec is startet with initprog when running buenos, and
+this starts hw without any problems. Then we get to write my name as
+many times as we want, before pressing enter instead of writing a
+name. The machine halts and shuts down by software request. Looking at
+the calc.c file we are guessing that this isn't for this assignment,
+and just hoping everything else is in order. We have confirmed that
+new processes now spawn on different \verb+pid+s, and that the test
+programs do what they should, hoping that is sufficient to claim that
+everything works as intended.
+
+
+
+%\pagenumbering{roman}
+%\setcounter{tocdepth}{3}
+%\thispagestyle{empty}
+%\clearpage
+%\renewcommand{\labelitemi}{$\cdot$}
+%\input{bibliography}
+
+%\setlength{\parindent}{2em}
+%\setlength{\parskip}{2ex}
+%\renewcommand{\arraystretch}{1.25}
+%\setcounter{page}{1}
+\end{document}
+
