@@ -101,9 +101,7 @@
 
 
 \section{Locks and condition variables for kernel threads in Buenos}
-1. This was our understanding of the first task, it may be wrong, but we
-would really like some feedback as to how it's wrong, perhaps just
-verbal feedback.
+1. First task should be completed, it goes as follows:
 
 \vspace{1pc}
 
@@ -121,7 +119,7 @@ spinlock for the given lock. It runs and keeps checking if the lock is
 still locked. If so, it adds the lock to the sleep queue, releases the
 spinlock and switches thread. When it is no longer locked, it locks it
 again so its locked to itself and the code can run without
-disruptions.
+disruptions. 
 
 \vspace{0.5pc}
 
@@ -133,10 +131,37 @@ and set the interrupt status back to its former glory.
 
 \vspace{1pc}
 
-2. This is how we understood the conditional statements, but reading
-at people's reaction to giving lock as an argument to condition signal
-makes it seem this could be wrong, we hope to get a better explanation
-for this part, the code is pretty self explanatory, as short as it is.
+2. We don't know how to test this, but at least we get what this was
+supposed to do now.
+
+\vspace{0.5pc}
+
+\verb+condition_init(cond_t *cond)+
+
+This doesn't need to do anything.
+
+\vspace{0.5pc}
+
+\verb+condition_wait(cond_t *cond, lock_t *lock)+
+
+Since it is required that this is only called when the lock is already
+acquired, we need to release it first. Then add the condition to the
+sleepq. Switch to a new thread until we return back here, and then
+reacquire the lock so it can be released when we get out of the
+\verb+condition_wait+.
+
+\vspace{0.5pc}
+
+\verb+condition_signal(cond_t *cond, lock_t *lock)+
+
+\verb+lock+ is set to itself, to satisfy the compiler. Then we signal,
+or rather wake up the sleeping condition.
+
+\vspace{0.5pc}
+
+\verb+condition_broadcast(cond_t *cond, lock_t *lock)+
+
+Same as with the \verb+condition_signal+, it just wakes up all sleepers.
 
 
 \section{One-Lane Synchronisation}
@@ -151,14 +176,53 @@ first is passing it, reset the queue when the car exits.
 
 If more cars come, open up for new cars going in the same
 direction. When a car approaches from the other direction, set a timer
-of 1 minute before cars need to stop from the first direction, and
-open up for the other direction, given the same rules. Again, if there
-are no cars as the last crossing car leaves the narrow path, reset the
-queue.
+of 30 seconds before cars need to stop from the first direction, let
+the rest through before opening up for the other direction, given the
+same rules. Again, if there are no cars as the last crossing car
+leaves the narrow path, reset the queue.
 
-2. We did not manage to complete this part of the task yet.
+2. We did not manage to complete this part of the task yet. But we did
+make an attempt at it. It was hard to figure out exactly how to code
+it, but we will attempt to clarify what we did make.
 
-3. And not this either.
+First in the oneLane.h file, we got definitions for some directions,
+north, south and no direction at all. Then we create the mutexes and
+the cond\_t's that we need to do the task. Some functions that we
+first considered necessary to complete the task are also there. These
+are specified in:
+
+\vspace{0.5pc}
+
+\verb+oneLane.c+
+
+We define some counters, for approaching and departing busses in each
+direction. Also which direction is currently waiting for the other
+side.
+
+\vspace{0.5pc}
+
+\verb+stop_other_direction()+
+
+This says, that if we are waiting for some side at all, attempt to
+stop busses from that side, to open up for busses from the direction
+we want. It's a conditional pthread which is used, to wait while there
+are still cars departing from the narrow path in the other
+direction. While it does this, it goes to sleep and waits using
+pthreads. When there are no more cars, we can unlock again and do
+whatever we need to do when one side has stopped running. Same goes
+for the other direction, with roles reversed. So far this doesn't
+really do much, but we are supposed to tell the approaching cars
+somehow to stop coming in from whatever direction the other direction
+is, so the counter of departing busses can go to zero.
+
+The \verb+go_this_way+ function is quite uselss as long as we can
+already stop the other direction, it is pretty much a different word
+for the same thing. It would be more useful if we had to direct the
+traffic in some certain way, that an end user would be able to start
+the flow of busses in a direction he saw struggling to keep up. But
+for an automated solution this is in fact void of usability.
+
+3. Couldn't finish this part without part two.
 
 
 

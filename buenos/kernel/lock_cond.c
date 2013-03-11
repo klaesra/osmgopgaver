@@ -3,11 +3,11 @@
 #include "kernel/sleepq.h"
 #include "lib/libc.h"
 
-static lock_t lock_table[LOCK_COND_MAX_LOCKS];
+//static lock_t lock_table[LOCK_COND_MAX_LOCKS];
 
 int lock_reset( lock_t *lock ){
     spinlock_reset(&lock->slock);
-    lock->locked = -1;
+    lock->locked = LOCK_UNLOCKED;
     return 0;
 }
 
@@ -18,12 +18,12 @@ void lock_acquire( lock_t *lock ) {
     intr_status = _interrupt_disable();
     spinlock_acquire(&lock->slock);
 
-    while (lock->locked >= 0) {
+    while (lock->locked == LOCK_LOCKED) {
         sleepq_add(lock);
         spinlock_release(&lock->slock);
         thread_switch();
     }
-    lock->locked = 0;
+    lock->locked = LOCK_LOCKED;
     
     spinlock_release(&lock->slock);
     _interrupt_set_state(intr_status);
@@ -36,38 +36,31 @@ void lock_release( lock_t *lock ) {
     intr_status = _interrupt_disable();
     spinlock_acquire(&lock->slock);
 
-    if (lock->locked < 0) {
-        sleepq_wake(lock);
-    }
-
+    lock->locked = LOCK_UNLOCKED;
+    sleepq_wake(lock);
+    
     spinlock_release(&lock->slock);
     _interrupt_set_state(intr_status);
 }
 
 
 void condition_init (cond_t *cond) {
-    int i;
-    if (cond) {
-        for (i = 0; i < LOCK_COND_MAX_LOCKS ; i++) {
-            lock_reset(&lock_table[i]);
-        }
-    }
+    cond = cond;
 }
 
 void condition_wait (cond_t *cond, lock_t *lock ) {
-    if (cond) {
-        lock_acquire(lock);
-    }
+    lock_release(lock);
+    sleepq_add(cond);
+    thread_switch();
+    lock_acquire(lock);
 }
 
 void condition_signal (cond_t *cond, lock_t *lock ) {
-    if (cond) {
-        lock_release(lock);
-    }
+    lock = lock;
+    sleepq_wake(cond);    
 }
 
 void condition_broadcast (cond_t *cond, lock_t *lock ) {
-    if (cond) {
-        sleepq_wake_all(lock);
-    }
+    lock = lock;    
+    sleepq_wake_all(&cond);
 }
