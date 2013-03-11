@@ -1,0 +1,129 @@
+% \begin{sloppypar} <-- fikser de afsnit, hvor der bruges \lstinline og
+% der spilder ud i marginen.
+
+
+%\includeonly{userguide}
+
+\documentclass[a4paper,10pt]{article}
+
+% NOTE: Missing packages? Try texlive-latex-extra
+% TIP (vim): map <F5> :!make view<RETURN><RETURN> 
+
+%\usepackage[danish]{babel,varioref}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% fonts
+%\usepackage{charter}
+%\usepackage{euler}
+%\usepackage{palatino}
+\usepackage{mathpazo}
+
+\usepackage{float} % for [H] figure option'en
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage[breaklinks=true,colorlinks=false,urlcolor=blue]{hyperref}
+\usepackage{breakurl} % due to http://www.tex.ac.uk/cgi-bin/texfaq2html?label=breaklinks
+\usepackage{color}
+\usepackage{amsmath}
+
+\usepackage[numbers]{natbib}
+\usepackage{textcomp}
+\usepackage{listings}
+\usepackage{verbatim}
+\usepackage[table]{xcolor}
+\usepackage[textfont={small,it}]{caption}
+\usepackage{subfig}
+\usepackage[]{algorithm2e}
+
+
+
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
+
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\definecolor{darkred}{rgb}{255,1,0.120}
+\lstset{language=Pascal,
+        %captionpos=b,
+	tabsize=4,
+	frame=lines,
+	%keywordstyle=\color{blue},
+	commentstyle=\color{darkgreen},
+	stringstyle=\color{red},
+	numberstyle=\tiny,
+	%numbersep=5pt,
+	breaklines=true,
+	showstringspaces=false,
+	basicstyle=\ttfamily,
+	%title= File: \lstname,
+	emph={label},
+}
+
+\title{Styresystemer og Multiprogrammering}
+\author{Jenny-Margrethe Vej, Klaes Bo Rasmussen}
+\makeatletter % enable use of \@ special variables
+\hypersetup{
+	pdftitle={\@title},
+	pdfauthor={\@author}
+}
+
+\newcommand{\code}[1] {\lstinline!#1!}
+
+\newenvironment{codeblock}[1][0.99] {
+	\begin{center}
+	\begin{minipage}
+	{#1\textwidth}
+}{
+	\end{minipage}
+	\end{center}
+}
+
+\begin{document}
+\thispagestyle{empty}
+\vspace*{\stretch{0}}
+\begin{flushright}
+   {\Huge\textbf{\@title}}\\[3mm]
+   \rule{\linewidth}{2mm}\\[3mm]
+   {\Large\textbf{\textit{G-opgave \#4}}}\\
+   \vspace{12cm}
+   {\normalsize \textbf{Jenny-Margrethe Vej}
+   \\(\url{rwj935@alumni.ku.dk})}
+   \\
+   {\normalsize \textbf{Klaes Bo Rasmussen}
+   \\(\url{twb822@alumni.ku.dk})}
+   \\
+	\vspace*{2cm}
+   {\normalsize Datalogisk Institut, Københavns Universitet}\\
+   {\normalsize Blok 3 - 2013}\\
+\end{flushright}
+%\vspace*{\stretch{2}}
+\clearpage
+
+\section*{TLB exception handling in Buenos}
+\subsection*{(1)}
+\input{1.1}
+\subsection*{(2)}
+\input{1.2}
+\subsection*{(3)}
+\input{1.3}
+\section*{Dynamic allocation for user processes}
+\subsection*{(1)}
+\input{2.1}
+\subsection*{(2)}
+\input{2.2}
+\section*{Extended tests for TLB exceptions(..)}
+\input{3}
+
+%\pagenumbering{roman}
+%\setcounter{tocdepth}{3}
+%\thispagestyle{empty}
+%\clearpage
+%\renewcommand{\labelitemi}{$\cdot$}
+%\input{bibliography}
+
+%\setlength{\parindent}{2em}
+%\setlength{\parskip}{2ex}
+%\renewcommand{\arraystretch}{1.25}
+%\setcounter{page}{1}
+\end{document}
+

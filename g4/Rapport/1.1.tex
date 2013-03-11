@@ -1,0 +1,17 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Implement handlers for TLB related exceptions in Buenos. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Da opgaveteksten siger, load og store håndteres på samme måde, har vi valgt at lave en hjælpefunktion, 
+der håndterer begge tilfælde. Funktionen hedder \verb+tlb_exception_handler+ og starter med at 
+sammenligne den virtuelle adresse som fejlen er meldt på, med adresserne i pagetables i den angivne 
+tråd. Hvis vi finder adressen, sættes den ind i TLB, ellers behandler vi den som en access violation, 
+henholdsvis i bruger-tråds tilstand eller kerne tilstand. Da vi behandler både load og store i handleren, 
+findes der fejlbeskeder for begge her. \\
+
+\noindent \verb+tlb_load_exception+ og \verb+tlb_store_exception+ kalder vores handler, og bruger 
+derfor den samme kode. \verb+tlb_modified_exception+ håndteres på næsten samme måde, som i vores 
+handler, hvor vi også sørger for at håndtere access violation i bruger-tråds tilstande samt kernel panic i 
+kerne tilstande. Derfor er det samme kode, der blot er kopieret op, dog uden genbrug af de if-sætninger, 
+der håndterede de 2 forskellige fejlbeskeder for henholdsvis store og load. 

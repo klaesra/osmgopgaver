@@ -1,0 +1,8 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Modify the Buenos exception handlers, so TLB exceptions will trigger the handlers implemented in 1.  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Vi har ændret 2 filer, for at opfylde opgavens krav: \verb+kernel/exception.c+ og \verb+proc\exception.c+.
+Det eneste, vi har ændret, er at tilføje \verb+tlb_load_exception+, \verb+tlb_store_exception+ og 
+\verb+tlb_modified_exception+ til de switch-cases, der var. 

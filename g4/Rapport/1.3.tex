@@ -1,0 +1,9 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Remove all calls to the function tlb_fill; this function should not be necessary any more, now that TLB
+%misses are handled properly
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Vi har via terminalkommandoen \verb+grep -r tlb_fill .+ fundet ud af, at \verb+tlb_fill+ eksisterer i følgende
+filer, hvor vi efterfølgende har fjernet dem. \verb+tlb.c+, \verb+tlb.h+, \verb+interrupt.c+ samt 
+\verb+process.c+.

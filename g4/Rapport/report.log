@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  25 FEB 2013 19:18
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  11 MAR 2013 23:50
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -944,68 +944,41 @@ File: ot1zplm.fd 2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
 
 {/usr/local/texlive/2011/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 LaTeX Font Info:    Font shape `T1/ppl/bx/n' in size <12> not available
-(Font)              Font shape `T1/ppl/b/n' tried instead on input line 105.
- (./1_a.tex
-Underfull \hbox (badness 10000) in paragraph at lines 7--12
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 13--18
-
- []
-
-
-Overfull \hbox (1.26834pt too wide) in paragraph at lines 19--22
-[]\T1/cmtt/m/n/10 dequeue \T1/ppl/m/n/10 gør brug af samme tankegang som oven-f
-or, bare "med mod-sat fortegn"
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 19--22
-
- []
-
-) (./1_b.tex) (./1_c.tex
-Underfull \hbox (badness 10000) in paragraph at lines 13--17
-
- []
-
-[2
-
-]) (./2_a.tex
-Underfull \hbox (badness 10000) in paragraph at lines 29--30
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 31--35
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 36--38
-
- []
-
-) (./2_b.tex
-Underfull \hbox (badness 10000) in paragraph at lines 9--10
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 11--15
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 16--18
+(Font)              Font shape `T1/ppl/b/n' tried instead on input line 103.
+ (./1.1.tex
+Underfull \hbox (badness 10000) in paragraph at lines 6--12
 
  []
 
 )
+Overfull \hbox (2.78108pt too wide) in paragraph at lines 13--105
+[]\T1/cmtt/m/n/10 tlb_load_exception \T1/ppl/m/n/10 og []\T1/cmtt/m/n/10 tlb_st
+ore_exception \T1/ppl/m/n/10 kalder vores han-dler, og bruger
+ []
+
+
+Overfull \hbox (4.89998pt too wide) in paragraph at lines 13--105
+\T1/ppl/m/n/10 der-for den samme kode. []\T1/cmtt/m/n/10 tlb_modified_exception
+ \T1/ppl/m/n/10 håndteres på næsten samme
+ []
+
+(./1.2.tex)
+Overfull \hbox (2.03452pt too wide) in paragraph at lines 6--107
+[]\T1/cmtt/m/n/10 proc\exception.c\T1/ppl/m/n/10 . Det en-este, vi har æn-dret,
+ er at til-føje []\T1/cmtt/m/n/10 tlb_load_exception\T1/ppl/m/n/10 ,
+ []
+
+(./1.3.tex)
+Overfull \hbox (6.31836pt too wide) in paragraph at lines 7--109
+\T1/ppl/m/n/10 Vi har via ter-mi-nalkom-man-doen []\T1/cmtt/m/n/10 grep -r tlb_
+fill . \T1/ppl/m/n/10 fun-det ud af, at []\T1/cmtt/m/n/10 tlb_fill
+ []
+
+(./2.1.tex) (./2.2.tex) (./3.tex)
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 128.
- [3]
+ [2
+
+]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 128.
  (./report.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 128.
@@ -1015,23 +988,23 @@ Package rerunfilecheck Info: File `report.out' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 128.
  ) 
 Here is how much of TeX's memory you used:
- 11408 strings out of 493633
- 163463 string characters out of 3143378
- 302311 words of memory out of 3000000
+ 11415 strings out of 493633
+ 163486 string characters out of 3143378
+ 300311 words of memory out of 3000000
  14514 multiletter control sequences out of 15000+200000
  22177 words of font info for 46 fonts, out of 3000000 for 9000
  831 hyphenation exceptions out of 8191
- 53i,6n,92p,243b,345s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 53i,5n,92p,243b,345s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/usr/local/texlive/2011/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}
 {/usr/local/texlive/2011/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/tex
 live/2011/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb></usr/local/texli
 ve/2011/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2011
 /texmf-dist/fonts/type1/urw/palatino/uplbi8a.pfb></usr/local/texlive/2011/texmf
 -dist/fonts/type1/urw/palatino/uplr8a.pfb>
-Output written on report.pdf (3 pages, 86450 bytes).
+Output written on report.pdf (2 pages, 78700 bytes).
 PDF statistics:
- 50 PDF objects out of 1000 (max. 8388607)
- 40 compressed objects within 1 object stream
+ 47 PDF objects out of 1000 (max. 8388607)
+ 38 compressed objects within 1 object stream
  11 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

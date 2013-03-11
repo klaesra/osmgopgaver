@@ -20,5 +20,9 @@ opdaterer samtidig alle pegerne, så de står korrekt efter tilføjelsen af det 
 fjerner altså et element her i stedet for at tilføje det, og sørger for også at frigøre pladsen fra det element, 
 vi har fjernet.\\
 
-\noindent Vi har testet alle 3 funktioner i \verb+main()+, hvor vi først indsætter elementer i køen, for derefter
-at tjekke længden. Derefter fjerner vi elementer, og tjekker samtidig, at længde-funktionen også virker her.
+\noindent For at teste vores løsning, valgte vi at lave en decideret testfil, for at holde den ønskede struktur.
+Vores tests bygger oven på hinanden, forstået på den måde, at vi først putter noget i vores kø, og derefter
+tjekker vi længden af elementerne i køen. Dette gør vi et par gange, så vi har mere end et element at 
+teste ud fra. Bagefter tester vi igen længdefunktionen blot sammen med \verb+dequeue+, så vi også ved,
+at vi kan få den korrekte længde, når vi fjerner elementer. Vi mener, at vores kode fungerer korrekt, da 
+vi ifølge vores tests både kan indsætte, fjerne og beregne længden, jf. opgavetekstens kriterier. 
