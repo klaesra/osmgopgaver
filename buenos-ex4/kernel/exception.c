@@ -88,7 +88,7 @@ void kernel_exception_handle(int exception)
 	tlb_load_exception();
 	break;
     case EXCEPTION_TLBS:
-      print_store_exception();
+        tlb_store_exception();
 	break;
     case EXCEPTION_ADDRL:
 	print_tlb_debug();

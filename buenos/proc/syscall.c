@@ -42,6 +42,66 @@
 #include "kernel/assert.h"
 #include "drivers/device.h"
 #include "drivers/gcd.h"
+#include "fs/vfs.h"
+
+/* A call to syscall_open prepares the file indicated by pathname for
+   reading and writing (read- only mode is not supported). The
+   pathname includes a volume name and a file name (for instance
+   [root]a.out). Returns a positive number bigger than 2 (serving as
+   the file handle to the open file) when successful, or a negative
+   number on error. */
+int syscall_open(char *pathname){
+    int ret = (int)vfs_open(pathname);
+    if (ret < 0)
+        return ret; // Error opening file, return negative value
+    else
+        return ret + 3; // return filehandle greather than 2
+}
+
+/* This system call has the effect to invalidate the file handle
+   passed as a parameter. It cannot be used in file operations any
+   more afterwards. */
+int syscall_close(int filehandle) {
+    return vfs_close((openfile_t)filehandle); //close file and return
+}
+
+/* Creates a new file with name pathname of size size. Returns 0 on
+   success, or a negative value on error. */
+int syscall_create(char* pathname, int size) {
+    return vfs_create(pathname, size);
+}
+
+/* Deletes the file with name pathname from the file system, fails if
+   the file is open. Returns 0 on success, or a negative number on
+   error. */
+int syscall_delete(char *pathname) {
+    return vfs_remove(pathname);
+}
+
+/* Set the reading or writing position of the open file represented by
+   filehandle to the indicated absolute offset (in bytes from the
+   beginning). Returns 0 on success, a negative number on
+   error. Seeking beyond the end of the file sets the position to the
+   end and produces an error return value. */
+int syscall_seek(int filehandle, int offset){
+    return vfs_seek((openfile_t)filehandle, offset);
+}
+
+/* Reads at most length bytes from the file identified by filehandle
+   (at the current file position) into buffer, advancing the file
+   position. Returns the number of bytes actually read (before
+   reaching the end of the file), or a negative value when an error
+   occurred. */
+//int syscall_read(int filehandle, void *buffer, int length) {
+//}
+
+/* Writes length bytes from buffer to the open file identified by
+   filehandle, starting at the current position and advancing the
+   position. Returns the number of bytes actually written, or a
+   negative value on error. */
+//int syscall_write(int filehandle, const void *buffer, int length){
+//}
+
 
 /* returns the number of bytes read before reaching the EOF 
  * or a negative value on error 
